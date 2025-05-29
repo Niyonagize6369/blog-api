@@ -78,7 +78,7 @@ export const verifyEmail = asyncHandler(async (
   await userService.update(user.id, { isVerified: true });
 
   // ✅ Send confirmation email after successful verification
-  await sendEmailVerifiedConfirmation(user.email);
+ 
 
   res.status(200).json({
     success: true,

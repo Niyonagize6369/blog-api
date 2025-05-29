@@ -161,31 +161,19 @@ export async function sendEmailVerifiedConfirmation(email: string) {
           </p>
 
           <p style="font-size: 16px; color: #333;">
-            Your email has been successfully verified. You can now access all features and continue using our services without any limitations.
+            Your email has been successfully verified.
           </p>
 
           <p style="font-size: 16px; color: #333;">
-            If you have any questions or need assistance, feel free to reach out to our support team.
+           for other info contact us.
           </p>
 
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${process.env.FRONTEND_URL}" target="_blank" style="
-              background-color: #4CAF50;
-              color: white;
-              padding: 14px 28px;
-              text-decoration: none;
-              font-size: 16px;
-              border-radius: 5px;
-              display: inline-block;
-            ">
-              Go to Dashboard
-            </a>
-          </div>
+          
 
           <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;" />
 
           <p style="font-size: 14px; color: #aaa; text-align: center;">
-            &copy; ${new Date().getFullYear()} Sarah App. All rights reserved.
+            &copy; ${new Date().getFullYear()} Rachel. All rights reserved.
           </p>
         </div>
       </div>

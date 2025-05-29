@@ -14,7 +14,7 @@ export const createPost = async (req: AuthenticatedRequest, res: Response) => {
     const user = req.user!;
 
     const post = await postService.createPost(title, content, user);
-    await sendEmail(user.email, "New Post Created", `Your post "${title}" has been created.`);
+   
 
     res.status(201).json({
       status: "success",
