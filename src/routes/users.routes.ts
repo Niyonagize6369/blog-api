@@ -14,7 +14,7 @@ import {
   updateUserSchema, 
   deleteUserSchema, 
   searchUsersSchema 
-} from '../schema/user.schemas';
+} from '../schemas/user.schemas';
 
 const router: Router = express.Router();
 

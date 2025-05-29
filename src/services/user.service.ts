@@ -1,53 +1,44 @@
-import { User } from '../modals/User';
-import { UserRepository } from '../repositories/user.repository';
-import bcrypt from 'bcrypt';
+import { AppDataSource } from '../config/database';
+import { User } from '../modals/user';
+import bcrypt from "bcrypt";
 
 export class UserService {
+  private userRepository = AppDataSource.getRepository(User);
 
-  // Auth
-  async create(userData: Partial<User>): Promise<User> {
-    if (!userData.password) {
-      throw new Error('Password is required');
-    }
-
-    const hashedPassword = await bcrypt.hash(userData.password, 10);
-    userData.password = hashedPassword;
-    
-    return UserRepository.createUser(userData);
-  }
-
-  async login(email: string, password: string): Promise<User | null> {
-    const user = await UserRepository.findOneByEmail(email);
-    if (!user) return null;
-
-    const passwordMatches = await bcrypt.compare(password, user.password);
-    if (!passwordMatches) return null;
-
-    return user;
-  }
-
-  // User Management
   async findAll(): Promise<User[]> {
-    return UserRepository.find();
+    return await this.userRepository.find();
   }
 
   async findById(id: number): Promise<User | null> {
-    return UserRepository.findOneById(id);
+    return await this.userRepository.findOneBy({ id });
   }
 
   async findByName(name: string): Promise<User[]> {
-    return UserRepository.findByName(name);
+    return await this.userRepository
+      .createQueryBuilder('user')
+      .where('LOWER(user.name) LIKE LOWER(:name)', { name: `%${name}%` })
+      .getMany();
   }
 
   async findByEmail(email: string): Promise<User | null> {
-    return UserRepository.findOneByEmail(email);
+    return await this.userRepository.findOneBy({ email });
   }
 
   async update(id: number, updatedData: Partial<User>): Promise<User | null> {
-    return UserRepository.updateUser(id, updatedData);
+    const user = await this.userRepository.findOneBy({ id });
+    if (!user) return null;
+    
+    // If password is being updated, hash it
+    if (updatedData.password) {
+      updatedData.password = await bcrypt.hash(updatedData.password, 10);
+    }
+    
+    Object.assign(user, updatedData);
+    return await this.userRepository.save(user);
   }
 
   async delete(id: number): Promise<boolean> {
-    return UserRepository.deleteUser(id);
+    const result = await this.userRepository.delete(id);
+    return result.affected ? result.affected > 0 : false;
   }
 }

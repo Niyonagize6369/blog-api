@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { User } from '../modals/User';
+import { User } from '../modals/user';
 
 export interface VerifyPayload {
   userId: number;
@@ -13,7 +13,7 @@ export function generateJWT(user: User): string {
       { 
         id: user.id,
         email: user.email, 
-        name: user.name , 
+        name: user.username , 
         role: user.role
       },
       JWT_SECRET,

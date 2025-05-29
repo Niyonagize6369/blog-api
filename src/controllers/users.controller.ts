@@ -6,7 +6,7 @@ import {
   GetUserByIdInput, 
   SearchUsersInput, 
   DeleteUserInput 
-} from '../schema/user.schemas';
+} from '../schemas/user.schemas';
 import { AuthenticatedRequest, ApiResponse } from '../types/common.types';
 import { NotFoundError, ConflictError } from '../utils/errors';
 

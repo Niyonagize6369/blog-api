@@ -1,6 +1,7 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { User } from '../modals/User';
+import { User } from '../modals/user';
+import { Post } from '../modals/blog';  // Adjust path accordingly
 
 dotenv.config();
 
@@ -9,11 +10,10 @@ export const AppDataSource = new DataSource({
   host: process.env.DB_HOST || 'localhost',
   port: parseInt(process.env.DB_PORT || '5432'),
   username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_DATABASE || 'blog-api1',
-  synchronize: process.env.NODE_ENV !== 'production', // Auto-create database schema in development.  
-  // logging: process.env.NODE_ENV !== 'production',
-  entities: [User],
+  password: process.env.DB_PASSWORD || 'Admin',
+  database: process.env.DB_DATABASE || 'blog-api2',
+  synchronize: process.env.NODE_ENV !== 'production',
+  entities: [User, Post],  
   migrations: ['src/migrations/**/*.ts'],
   subscribers: ['src/subscribers/**/*.ts'],
 });
@@ -27,3 +27,4 @@ export const initializeDatabase = async (): Promise<void> => {
     throw error;
   }
 };
+

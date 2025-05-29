@@ -1,4 +1,5 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Post } from './blog';
 
 export type UserRole = 'user' | 'admin';
 @Entity('users')
@@ -7,7 +8,7 @@ export class User {
   id!: number;
 
   @Column({ length: 100 })
-  name!: string;
+  username!: string;
 
   @Column({ length: 100, nullable: true, unique: true })
   email!: string;
@@ -29,4 +30,8 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt?: Date;
+  // inside User entity
+@OneToMany(() => Post, post => Post.author)
+posts: Post[] | undefined;
+
 }

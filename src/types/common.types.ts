@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { User } from '../modals/User';
+import { User } from '../modals/user';
 
 
 export interface AuthenticatedRequest extends Request {

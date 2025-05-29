@@ -1,10 +1,9 @@
 // src/middleware/authorize.ts
 import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { User } from '../modals/user';
 
 interface AuthRequest extends Request {
-  user?: {
-    role: 'user' | 'admin';
-  };
+  user?: User
 }
 
 export const authorize = (allowedRoles: ('user' | 'admin')[]): RequestHandler => {

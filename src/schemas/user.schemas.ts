@@ -9,7 +9,7 @@ import {
 
 export const createUserSchema = z.object({
   body: z.object({
-    name: nameSchema,
+   username: nameSchema,
     email: emailSchema,
     password: passwordSchema,
     role: z.enum(["user", "admin"]).default("user"),
