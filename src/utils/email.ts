@@ -11,7 +11,7 @@ export async function sendVerificationEmail(email: string, link: string) {
     html: `
       <div style="
         font-family: Arial, sans-serif; 
-        background-color: #f5f5f5; 
+        background-color:rgb(97, 94, 94); 
         padding: 40px 0;
       ">
         <div style="
@@ -19,10 +19,10 @@ export async function sendVerificationEmail(email: string, link: string) {
           margin: auto; 
           background: #fff; 
           border-radius: 8px; 
-          box-shadow: 0 0 10px rgba(0,0,0,0.1); 
+          box-shadow: 0 0 10px rgba(167, 155, 155, 0.1); 
           padding: 30px;
         ">
-          <h2 style="color: #4CAF50; text-align: center;">Welcome to Our Platform!</h2>
+          <h2 style="color:rgb(191, 240, 193); text-align: center;">Welcome to Our Platform!</h2>
           
           <p style="font-size: 16px; color: #333;">Hi there,</p>
 
@@ -32,7 +32,7 @@ export async function sendVerificationEmail(email: string, link: string) {
 
           <div style="text-align: center; margin: 30px 0;">
             <a href="${link}" target="_blank" style="
-              background-color: #4CAF50;
+              background-color:rgb(209, 240, 210);
               color: white;
               padding: 14px 28px;
               text-decoration: none;
@@ -84,7 +84,7 @@ export const sendResetPasswordEmail = async (email: string, resetLink: string) =
           box-shadow: 0 0 10px rgba(0,0,0,0.1); 
           padding: 30px;
         ">
-          <h2 style="color: #ff6f61; text-align: center;">Reset Your Password</h2>
+          <h2 style="color:rgb(249, 28, 8); text-align: center;">Reset Your Password</h2>
 
           <p style="font-size: 16px; color: #333;">Hello,</p>
 
@@ -94,7 +94,7 @@ export const sendResetPasswordEmail = async (email: string, resetLink: string) =
 
           <div style="text-align: center; margin: 30px 0;">
             <a href="${resetLink}" target="_blank" style="
-              background-color: #ff6f61;
+              background-color:rgb(118, 16, 6);
               color: white;
               padding: 14px 28px;
               text-decoration: none;
@@ -154,7 +154,7 @@ export async function sendEmailVerifiedConfirmation(email: string) {
           box-shadow: 0 0 10px rgba(0,0,0,0.1);
           padding: 30px;
         ">
-          <h2 style="color: #4CAF50; text-align: center;">Email Verified</h2>
+          <h2 style="color:rgb(83, 101, 84); text-align: center;">Email Verified</h2>
 
           <p style="font-size: 16px; color: #333;">
             Hello,
