@@ -89,7 +89,7 @@ export const sendResetPasswordEmail = async (email: string, resetLink: string) =
           <p style="font-size: 16px; color: #333;">Hello,</p>
 
           <p style="font-size: 16px; color: #333;">
-            We received a request to reset your password. If this was you, click the button below to proceed:
+            you received a request to reset your password. If this was you, click the button:
           </p>
 
           <div style="text-align: center; margin: 30px 0;">
@@ -107,7 +107,7 @@ export const sendResetPasswordEmail = async (email: string, resetLink: string) =
           </div>
 
           <p style="font-size: 14px; color: #555;">
-            If you did not request a password reset, no action is needed. You can safely ignore this message.
+            If you did not request a password reset, ignore this message.
           </p>
 
           <p style="font-size: 14px; color: #999;">
@@ -117,7 +117,7 @@ export const sendResetPasswordEmail = async (email: string, resetLink: string) =
           <hr style="margin: 30px 0; border: none; border-top: 1px solid #eee;" />
 
           <p style="font-size: 14px; color: #aaa; text-align: center;">
-            &copy; ${new Date().getFullYear()} Sarah App. All rights reserved.
+            &copy; ${new Date().getFullYear()} All rights reserved.
           </p>
         </div>
       </div>
