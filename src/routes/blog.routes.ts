@@ -7,10 +7,10 @@ import { validate } from "../middleware/validation.middleware";
 
 const router = Router();
 
-router.post("/add", authenticated,validate(createPostSchema), createPost);
+router.post("/create", authenticated,validate(createPostSchema), createPost);
 router.get("/get", getPosts);
 router.get("/get/:id", getPostById);
-router.put("/:id", authenticated,validate(updatePostSchema), updatePost);
+router.put("/update/:id", authenticated,validate(updatePostSchema), updatePost);
 router.delete("/delete/:id", authenticated, deletePost);
 
 

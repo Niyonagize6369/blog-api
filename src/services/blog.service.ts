@@ -25,7 +25,7 @@ export class PostService {
 }
 
   async getPostById(id: number) {
-    return await this.postRepo.findOne({ where: { id }, relations: ['author'] });
+    return await this.postRepo.findOne({ where: { id }, relations: ['author'] }); 
   }
 
   async updatePost(id: number, data: Partial<Post>, user: User) {
@@ -33,8 +33,7 @@ export class PostService {
     if (!post) return null;
     if (post.author.id !== user.id && user.role !== 'admin') return null;
 
-    Object.assign(post, data);
-    return await this.postRepo.save(post);
+    return await this.postRepo.update(id,data);
   }
 
   async deletePost(id: number, user: User) {

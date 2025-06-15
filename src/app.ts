@@ -3,12 +3,15 @@ import express, { Express } from 'express';
 import * as dotenv from 'dotenv';
 import { initializeDatabase } from './config/database';
 import { errorHandler } from './middleware/errorHandler';
-
 import routes from './routes/index';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger-output.json';
+import BlogRoutes from "./routes/blog.routes";
+import UsersRoutes from "./routes/users.routes";
+import cors from 'cors';
 
 const app = express();
+app.use(cors());
 
 // app.use(cors({ origin: process.env.CORS_ORIGIN, credentials: true }));
 app.use(express.json({ limit: '16kb' }));
@@ -17,6 +20,8 @@ app.use(express.static('public'));
 
 // Mount API routes under /api/v1 prefix
 app.use('/api/v1', routes);
+app.use('/api/v1/blog', BlogRoutes);
+app.use('/api/v1/users', UsersRoutes);
 
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -41,7 +46,8 @@ const startServer = async () => {
       
       // Start Express server
       app.listen(PORT, () => {
-        console.log(`🚀 Server running on http://127.0.0.1:${PORT}`);
+        console.log(`🚀 Server running on http://127.0.0.1:${PORT}`),
+        console.log(`📚 API Documentation running on http://localhost:${PORT}/api-docs`);
       });
     } catch (error) {
       console.error(' Failed to start server:', error);

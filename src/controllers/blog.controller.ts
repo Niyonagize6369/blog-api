@@ -84,13 +84,13 @@ export async function updatePost(req: AuthenticatedRequest, res: Response): Prom
       return;
     }
 
-    if (existingPost.author.id !== user.id && user.role !== "admin") {
-      res.status(403).json({ 
-        status: "error", 
-        Code: 403, 
-        message: "Unauthorized to update this post" });
-      return;
-    }
+    // if (existingPost.author.id !== user.id && user.role !== "admin") {
+    //   res.status(403).json({ 
+    //     status: "error", 
+    //     Code: 403, 
+    //     message: "Unauthorized to update this post" });
+    //   return;
+    // }
 
     const updatedPost = await postService.updatePost(postId, updateData, user);
     res.status(200).json({

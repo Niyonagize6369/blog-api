@@ -17,7 +17,7 @@ export function generateJWT(user: User): string {
         role: user.role
       },
       JWT_SECRET,
-      { expiresIn: '1h' }
+      { expiresIn: '1d' }
     );
   }
 

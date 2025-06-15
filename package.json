@@ -8,13 +8,13 @@
     "build": "tsc",
     "watch": "tsc -w",
     "serve": "nodemon dist/app.js",
-    "devStart": "nodemon --exec ts-node src/app.ts",
+    "devstart": "nodemon --exec ts-node src/app.ts",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js -d src/config/database.ts",
     "migration:create": "typeorm migration:create",
     "migration:generate": "npm run typeorm -- migration:generate",
     "migration:run": "npm run typeorm -- migration:run",
     "migration:revert": "npm run typeorm -- migration:revert",
-     "swagger": "ts-node src/swagger.ts"
+    "swagger": "ts-node src/swagger.ts"
 
   },
   "keywords": [],
@@ -23,6 +23,7 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
@@ -39,6 +40,7 @@
     "@babel/node": "^7.27.1",
     "@babel/preset-env": "^7.27.2",
     "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.21",
