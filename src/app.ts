@@ -8,6 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './swagger-output.json';
 import BlogRoutes from "./routes/blog.routes";
 import UsersRoutes from "./routes/users.routes";
+import AuthRoutes from "./routes/auth.routes";
 import cors from 'cors';
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(express.static('public'));
 app.use('/api/v1', routes);
 app.use('/api/v1/blog', BlogRoutes);
 app.use('/api/v1/users', UsersRoutes);
+app.use('/api/v1/auth', AuthRoutes);
 
 // Serve Swagger documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

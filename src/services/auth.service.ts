@@ -21,11 +21,22 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<User | null> {
     const user = await this.userRepository.findOneBy({ email });
-    if (!user) return null;
+    if (!user) {
+        console.log("No user found with email:", email);
+        return null;
+    }
+
+    console.log("User found:", user);
+    console.log("User hashed password:", user.password);
 
     const passwordMatches = await bcrypt.compare(password, user.password);
-    if (!passwordMatches) return null;
+    console.log("Password matches:", passwordMatches);
+
+    if (!passwordMatches) {
+        return null;
+    }
 
     return user;
-  }
+}
+
 }
