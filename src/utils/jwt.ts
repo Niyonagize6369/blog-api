@@ -13,11 +13,11 @@ export function generateJWT(user: User): string {
       { 
         id: user.id,
         email: user.email, 
-        name: user.username , 
+        name: user.name , 
         role: user.role
       },
       JWT_SECRET,
-      { expiresIn: '1d' }
+      { expiresIn: '10h' }
     );
   }
 

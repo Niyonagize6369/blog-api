@@ -3,10 +3,10 @@ import { emailSchema, passwordSchema, nameSchema } from './common.schemas';
 
 export const signupSchema = z.object({
   body: z.object({
-    username: nameSchema,
+    name: nameSchema,
     email: emailSchema,
     password: passwordSchema,
-    role: z.enum(['user', 'admin']).default('user')
+    role: z.enum(['user', 'admin', 'superadmin']).default('user')
   })
 });
 
@@ -36,11 +36,6 @@ export const verifyEmailSchema = z.object({
   params: z.object({
     token: z.string().min(1, 'Token is required')
   })
-});
-export const ResendVerificationInput = z.object({
-  body: z.object({
-    email: z.string().email(),
-  }),
 });
 
 export type SignupInput = z.infer<typeof signupSchema>;

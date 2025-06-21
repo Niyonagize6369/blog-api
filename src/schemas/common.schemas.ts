@@ -1,10 +1,9 @@
 import { z } from "zod";
 
 export const idParamSchema = z.object({
-  id: z.string().regex(/^\d+$/, "ID must be a valid number").transform(Number),
+  id: z.string(),
 });
-const anyStickerRegex = /^[\p{L}\p{N}\p{P}\p{Zs}\p{Extended_Pictographic}]*$/u;
-
+// .regex(/^\d+$/, "ID must be a valid number").transform(Number)
 export const paginationSchema = z.object({
   page: z.string().regex(/^\d+$/).transform(Number).default("1"),
   limit: z.string().regex(/^\d+$/).transform(Number).default("10"),
@@ -31,16 +30,21 @@ export const nameSchema = z
   .min(2, "Name must be at least 2 characters")
   .max(100, "Name must be less than 100 characters")
   .regex(/^[a-zA-Z\s]+$/, "Name can only contain letters and spaces");
-  
 
-  export const idParamSchemas = z.object({
-  id: z.string().uuid("Invalid ID format"), // or z.string().regex(...) for other ID formats
-});
 
 export const titleSchema = z
-.string()
-.min(5, "Title should be at least 5 characters")
-.max(200, "Title should be at most 200 characters")
-.regex(anyStickerRegex, "Title can only contain letters, numbers, punctuation, and spaces");
+  .string()
+  .min(2, "The title should have a least 2 characters")
+  .max(100, "The title must have less than 100 characters")
 
-export const contentSchema = z.string().min(10, "Content should be at least 10 characters");
+export const contentSchema = z
+  .string()
+  .max(300, "The content must not exceed 200 characters")
+
+export const likeSchema = z.number;
+
+export const booleanSchema = z.boolean();
+
+export const imgSchema = z.string();
+
+export const categorySchema = z.number().int().min(0).max(3)

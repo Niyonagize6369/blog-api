@@ -1,19 +1,19 @@
 import express, { Router } from 'express';
-import { 
-  getAllUsers, 
-  search, 
-  getById, 
-  updateUser, 
-  deleteUser 
+import {
+  getAllUsers,
+  search,
+  getById,
+  updateUser,
+  deleteUser
 } from '../controllers/users.controller';
 import { authenticated } from '../middleware/auth.middleware';
 import { authorize } from '../middleware/authorize';
 import { validate } from '../middleware/validation.middleware';
-import { 
-  getUserByIdSchema, 
-  updateUserSchema, 
-  deleteUserSchema, 
-  searchUsersSchema 
+import {
+  getUserByIdSchema,
+  updateUserSchema,
+  deleteUserSchema,
+  searchUsersSchema
 } from '../schemas/user.schemas';
 
 const router: Router = express.Router();
@@ -28,20 +28,26 @@ router.use(authenticated);
 router.get('/:id', validate(getUserByIdSchema), getById);
 
 // Only admins can update or delete users
-router.get('/', 
-    authorize(['admin']),
+router.get('/',
+    authorize(['superadmin']),
     getAllUsers
 );
 
-router.put('/:id', 
-  authorize(['admin']), 
-  validate(updateUserSchema), 
+router.put('/:id',
+  authorize(['superadmin']),
+  validate(updateUserSchema),
   updateUser
 );
 
-router.delete('/:id', 
-  authorize(['admin']), 
-  validate(deleteUserSchema), 
+router.put('/:id',
+    authorize(['superadmin']),
+    validate(updateUserSchema),
+    updateUser
+);
+
+router.delete('/:id',
+  authorize(['superadmin']),
+  validate(deleteUserSchema),
   deleteUser
 );
 

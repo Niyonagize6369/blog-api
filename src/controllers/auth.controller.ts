@@ -3,10 +3,10 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { AuthService } from '../services/auth.service';
-import { UserService } from '../services/user.service';
+import { UserService } from '../services/users.service';
 
 import { generateJWT, generateResetToken, generateVerifyToken } from '../utils/jwt';
-import { sendResetPasswordEmail, sendVerificationEmail, sendEmailVerifiedConfirmation  } from '../utils/email';
+import { sendResetPasswordEmail, sendVerificationEmail } from '../utils/email';
 import { asyncHandler } from '../middleware/errorHandler';
 
 import { 
@@ -28,7 +28,7 @@ export const signup = asyncHandler(async (
     res: Response<ApiResponse>,
     next: NextFunction
 ) => {
-        const { username, email, password, role } = req.body;
+        const { name, email, password, role } = req.body;
 
         const existingUser = await userService.findByEmail(email);
 
@@ -36,9 +36,9 @@ export const signup = asyncHandler(async (
             throw new ConflictError('User with this email already exists');
         }
 
-        const newUser = await authService.create({ username, email, password, role });
+        const newUser = await authService.create({ name, email, password, role });
         const token = generateVerifyToken({ userId: newUser.id, email: newUser.email });
-        const verifyLink = `${process.env.FRONTEND_URL}/verify-email/${token}`;
+        const verifyLink = `${token}`;
 
        await sendVerificationEmail(newUser.email, verifyLink);
        
@@ -48,7 +48,7 @@ export const signup = asyncHandler(async (
         data: {
           user: {
             id: newUser.id,
-            username: newUser.username,
+            name: newUser.name,
             email: newUser.email,
             role: newUser.role
           }
@@ -58,78 +58,68 @@ export const signup = asyncHandler(async (
 
 //Verify email
 export const verifyEmail = asyncHandler(async (
-  req: AuthenticatedRequest & VerifyEmailInput, 
-  res: Response,
-  next: NextFunction
-) => {
-  const { token } = req.params;
-
-  const payload = jwt.verify(token, process.env.JWT_SECRET!) as { userId: number };
-
-  const user = await userService.findById(payload.userId);
-  if (!user) {
-    throw new NotFoundError('User');
-  }
-
-  if (user.isVerified) {
-    throw new ConflictError('Email is already verified');
-  }
-
-  await userService.update(user.id, { isVerified: true });
-
-  // ✅ Send confirmation email after successful verification
- 
-
-  res.status(200).json({
-    success: true,
-    message: 'Email verified successfully',
+    req: AuthenticatedRequest & VerifyEmailInput, 
+    res: Response<ApiResponse>,
+  ) => {
+    const { token } = req.params;
+  
+    const payload = jwt.verify(token, process.env.JWT_SECRET!) as { userId: number };
+    const user = await userService.findById(payload.userId);
+    
+    if (!user) {
+      throw new NotFoundError('User');
+    }
+  
+    if (user.isVerified) {
+      throw new ConflictError('Email is already verified');
+    }
+  
+    await userService.update(user.id, { isVerified: true });
+  
+    res.status(200).json({
+      success: true,
+      message: 'Email verified successfully'
+    });
   });
-});
+
 //Login
-export const login = asyncHandler(
-  async (
+export const login = asyncHandler(async (
     req: AuthenticatedRequest & LoginInput, 
-    res: Response<ApiResponse>, 
+    res: Response<ApiResponse>,
     next: NextFunction
   ) => {
     const { email, password } = req.body;
-
-    // Use your service to find and verify the user
+  
     const user = await authService.login(email, password);
     if (!user) {
       throw new UnauthorizedError('Invalid email or password');
     }
-
+  
     if (!user.isVerified) {
       throw new ForbiddenError('Please verify your email before logging in');
     }
-
+  
     if (!user.isActive) {
       throw new ForbiddenError('Your account has been deactivated');
     }
-
-    // Generate JWT token
+  
     const token = generateJWT(user);
-
-    // Log token to console for debugging (remove in production)
-    console.log('Generated JWT token:', token);
-
-    // Return success response with user info and token
+  
     res.json({
       success: true,
       message: 'Login successful',
       data: {
         user: { 
           id: user.id, 
-          name: user.username, 
+          name: user.name, 
           email: user.email, 
           role: user.role 
         },
-        token,
-      },
+        token
+      }
     });
-  }
-);
+  });
+
 
 
 //forgot Password
@@ -146,7 +136,7 @@ export const forgotPassword = asyncHandler(async (
     }
   
     const token = generateResetToken(user.email);
-    const resetLink = `${process.env.RESET_PASSWORD_URL}/${token}`;
+    const resetLink = `${token}`;
   
     await sendResetPasswordEmail(email, resetLink);
   
@@ -154,6 +144,7 @@ export const forgotPassword = asyncHandler(async (
       success: true,
       message: 'Password reset link sent to your email'
     });
+
   });
 
 // Reset Password
@@ -173,39 +164,10 @@ export const resetPassword = asyncHandler(async (
     }
   
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    await userService.update(user.id, { password: hashedPassword });
+    await userService.update(user.id, { password: newPassword });
   
     res.status(200).json({
       success: true,
       message: 'Password reset successfully'
     });
   });
-  // Resend Verification Email
-export const resendVerificationEmail = asyncHandler(async (
-  req: AuthenticatedRequest, 
-  res: Response<ApiResponse>,
-  next: NextFunction
-) => {
-  const { email } = req.body;
-
-  const user = await userService.findByEmail(email);
-  if (!user) {
-    throw new NotFoundError('User');
-  }
-
-  if (user.isVerified) {
-    throw new ConflictError('Email is already verified');
-  }
-
-  const token = generateVerifyToken({ userId: user.id, email: user.email });
-  const verifyLink = `${process.env.FRONTEND_URL}/verify-email/${token}`;
-
-  await sendVerificationEmail(user.email, verifyLink);
-
-  res.status(200).json({
-    success: true,
-    message: 'A new verification link has been sent to your email',
-  });
-});
-
-  

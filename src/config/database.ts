@@ -1,7 +1,9 @@
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { User } from '../modals/user';
-import { Post } from '../modals/blog';  // Adjust path accordingly
+import { Post } from '../modals/Post';  // Adjust path accordingly
+import { Like } from '../modals/Likes';
+import { Comment } from '../modals/Comment';
 
 dotenv.config();
 
@@ -13,7 +15,7 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD || 'Admin',
   database: process.env.DB_DATABASE || 'blog-api2',
   synchronize: process.env.NODE_ENV !== 'production',
-  entities: [User, Post],  
+  entities: [User, Post, Like,Comment],  
   migrations: ['src/migrations/**/*.ts'],
   subscribers: ['src/subscribers/**/*.ts'],
 });

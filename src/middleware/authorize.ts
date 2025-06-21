@@ -1,12 +1,13 @@
 // src/middleware/authorize.ts
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { User } from '../modals/user';
 
 interface AuthRequest extends Request {
-  user?: User
+  user?: {
+    role: 'user' | 'admin' | 'superadmin';
+  };
 }
 
-export const authorize = (allowedRoles: ('user' | 'admin')[]): RequestHandler => {
+export const authorize = (allowedRoles: ('user' | 'admin' | 'superadmin')[]): RequestHandler => {
   return (req: AuthRequest, res: Response, next: NextFunction): void => {
     
     // If user is not authenticated at all
@@ -21,7 +22,6 @@ export const authorize = (allowedRoles: ('user' | 'admin')[]): RequestHandler =>
       return;
     }
 
-    // if everthing is ok
     next();
   };
 };

@@ -9,10 +9,10 @@ import {
 
 export const createUserSchema = z.object({
   body: z.object({
-   username: nameSchema,
+    name: nameSchema,
     email: emailSchema,
     password: passwordSchema,
-    role: z.enum(["user", "admin"]).default("user"),
+    role: z.enum(["user", "admin", "superadmin"]).default("user"),
   }),
 });
 
@@ -22,7 +22,7 @@ export const updateUserSchema = z.object({
     .object({
       name: nameSchema.optional(),
       email: emailSchema.optional(),
-      role: z.enum(["user", "admin"]).optional(),
+      role: z.enum(["user", "admin", "superadmin"]).optional(),
       isActive: z.boolean().optional(),
     })
     .refine((data) => Object.keys(data).length > 0, {
@@ -39,7 +39,7 @@ export const searchUsersSchema = z.object({
     .object({
       name: z.string().min(1, "Search term is required").optional(),
       email: z.string().email().optional(),
-      role: z.enum(["user", "admin"]).optional(),
+      role: z.enum(["user","admin", "superadmin"]).optional(),
       isActive: z.boolean().optional(),
       isVerified: z.boolean().optional(),
     })

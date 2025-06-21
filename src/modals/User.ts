@@ -1,19 +1,21 @@
-import { Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
-import { Post } from './blog';
+import {Entity, Column, CreateDateColumn, UpdateDateColumn, PrimaryGeneratedColumn, OneToMany} from 'typeorm';
+import { Post } from './Post';
+import { Like } from './Likes';
+import { Comment } from './Comment';
 
-export type UserRole = 'user' | 'admin';
+export type UserRole = 'user' | 'admin' | 'superadmin';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Column({ length: 100 })
-  username!: string;
+  name!: string;
 
   @Column({ length: 100, nullable: true, unique: true })
   email!: string;
 
-  @Column({ type: 'enum', enum: ['user', 'admin'], default: 'user' })
+  @Column({ type: 'enum', enum: ['user', 'admin', 'superadmin'], default: 'user' })
   role!: UserRole;
 
   @Column({ length: 255 })
@@ -30,8 +32,14 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt?: Date;
-  // inside User entity
-@OneToMany(() => Post, post => Post.author)
-posts: Post[] | undefined;
+
+  @OneToMany(() => Post, (post) => post.userId)
+  posts!: Post[];
+
+  @OneToMany(() => Like, like => like.user)
+  likes: Like[] | undefined;
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments!: Post[];
 
 }
