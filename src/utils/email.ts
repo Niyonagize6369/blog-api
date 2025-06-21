@@ -3,7 +3,7 @@ import { createTransporter } from "../config/mail-transport";
 
 export async function sendVerificationEmail(email: string, verifyToken: string) {
   // @ts-ignore
-  const link = `${process.env.FRONTEND_URL.replace(/\/$/, "")}/verify-email?token=${verifyToken}`;
+  const link = `${process.env.FRONTEND_URL.replace(/\/$/, "")}/auth/verify-email?token=${verifyToken}`;
   const transporter = await createTransporter();
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
